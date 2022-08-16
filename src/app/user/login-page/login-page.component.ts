@@ -32,8 +32,6 @@ export class LoginPageComponent implements OnInit {
 
   onSubmit() {
     if (this.form.valid) {
-      console.log('user login');
-
       this.service
         .loginWithEmail(this.email?.value, this.password?.value)
         .subscribe();

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { User } from '../utilities/User';
-import { Observable, map } from 'rxjs';
+import { Observable, map, Subject, BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -9,7 +9,13 @@ import { Observable, map } from 'rxjs';
 export class UserService {
   api = 'http://localhost:3000';
 
-  constructor(private http: HttpClient) {}
+  isUserLoggedIn = new BehaviorSubject<boolean>(false);
+
+  constructor(private http: HttpClient) {
+    if (localStorage.getItem('uid')) {
+      this.isUserLoggedIn.next(true);
+    }
+  }
 
   getUserById(id: number): Observable<User> {
     return this.http.get<User>(`${this.api}/users`);
@@ -24,12 +30,18 @@ export class UserService {
       map((user) => {
         user.forEach((key) => {
           if (key.email === email && key.password === password) {
+            this.isUserLoggedIn.next(true);
             return localStorage.setItem('uid', String(key.id));
           }
           return null;
         });
       })
     );
+  }
+
+  logout() {
+    this.isUserLoggedIn.next(false);
+    return localStorage.removeItem('uid');
   }
 
   getUid() {

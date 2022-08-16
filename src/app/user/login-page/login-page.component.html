@@ -1,8 +1,8 @@
 <form
-  class="example-form bg-gray-300 flex flex-col items-center py-4"
+  class="bg-white flex flex-col items-center p-8 w-fit mx-auto mt-8 border border-solid rounded"
   [formGroup]="form"
 >
-  <mat-form-field class="example-full-width" appearance="fill">
+  <mat-form-field class="example-full-width" appearance="outline">
     <mat-label>Email</mat-label>
     <input matInput formControlName="email" />
     <mat-error *ngIf="email?.invalid && email?.dirty">
@@ -10,7 +10,7 @@
     </mat-error>
   </mat-form-field>
 
-  <mat-form-field class="example-full-width" appearance="fill">
+  <mat-form-field class="example-full-width" appearance="outline">
     <mat-label>Password</mat-label>
     <input matInput formControlName="password" />
     <mat-error *ngIf="password?.invalid && password?.dirty">
@@ -19,7 +19,15 @@
   </mat-form-field>
 
   <div>
-    <button mat-button routerLink="signup" type="button">Sign up</button>
-    <button mat-button type="button" (click)="onSubmit()">Login me</button>
+    <button mat-raised-button routerLink="signup" type="button">Sign up</button>
+    <button
+      mat-raised-button
+      color="primary"
+      type="button"
+      (click)="onSubmit()"
+      class="uppercase"
+    >
+      Login
+    </button>
   </div>
 </form>

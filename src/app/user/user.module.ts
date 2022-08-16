@@ -11,9 +11,10 @@ import { UserRoutingModule } from './user-routing.module';
 
 import { LoginPageComponent } from './login-page/login-page.component';
 import { SignupPageComponent } from './signup-page/signup-page.component';
+import { ProfilePageComponent } from './profile-page/profile-page.component';
 
 @NgModule({
-  declarations: [LoginPageComponent, SignupPageComponent],
+  declarations: [LoginPageComponent, SignupPageComponent, ProfilePageComponent],
   imports: [
     CommonModule,
     ReactiveFormsModule,

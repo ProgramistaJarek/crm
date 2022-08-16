@@ -79,13 +79,14 @@ export class SignupPageComponent implements OnInit {
 
   onSubmit() {
     if (this.form.valid) {
+      const uid = this.randomId();
       this.service
         .addNewUser({
           firstName: this.firstName?.value,
           lastName: this.lastName?.value,
           email: this.email?.value,
           password: this.password?.value,
-          id: this.randomId(),
+          id: uid,
         })
         .subscribe(() => {
           this.router.navigate(['/login']);
