@@ -56,17 +56,19 @@
     </mat-form-field>
   </p>
 
+  <mat-error *ngIf="showMessage" class="mb-2">
+    {{ errorMessage }}
+  </mat-error>
+
   <div>
-    <button mat-raised-button routerLink="/login" type="button" class="mr-2">
-      Login
-    </button>
+    <button mat-raised-button routerLink="/login" type="button">Login</button>
     <button
       mat-raised-button
       color="primary"
       type="button"
       (click)="onSubmit()"
-      class="ml-2"
       class="uppercase"
+      [disabled]="!form.valid"
     >
       Sign up
     </button>

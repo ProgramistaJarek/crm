@@ -18,6 +18,10 @@
     </mat-error>
   </mat-form-field>
 
+  <mat-error *ngIf="showMessage" class="mb-2">
+    {{ errorMessage }}
+  </mat-error>
+
   <div>
     <button mat-raised-button routerLink="signup" type="button">Sign up</button>
     <button
@@ -26,6 +30,7 @@
       type="button"
       (click)="onSubmit()"
       class="uppercase"
+      [disabled]="!form.valid"
     >
       Login
     </button>

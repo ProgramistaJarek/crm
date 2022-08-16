@@ -9,6 +9,8 @@ import { UserService } from 'src/app/services/user.service';
 })
 export class LoginPageComponent implements OnInit {
   form!: FormGroup;
+  showMessage: boolean = false;
+  errorMessage!: string;
 
   constructor(private service: UserService) {}
 
@@ -34,7 +36,14 @@ export class LoginPageComponent implements OnInit {
     if (this.form.valid) {
       this.service
         .loginWithEmail(this.email?.value, this.password?.value)
-        .subscribe();
+        .subscribe({
+          next: () => (this.showMessage = false),
+          error: (e) => {
+            this.showMessage = true;
+            this.errorMessage = e;
+          },
+        });
+      this.form.reset();
     }
   }
 }

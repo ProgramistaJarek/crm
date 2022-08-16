@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { tap } from 'rxjs';
 
 import { UserService } from 'src/app/services/user.service';
 import { User } from 'src/app/utilities/User';
@@ -14,6 +13,8 @@ import { User } from 'src/app/utilities/User';
 export class SignupPageComponent implements OnInit {
   form!: FormGroup;
   user!: User;
+  showMessage: boolean = false;
+  errorMessage!: string;
 
   constructor(private service: UserService, private router: Router) {}
 
@@ -80,17 +81,29 @@ export class SignupPageComponent implements OnInit {
   onSubmit() {
     if (this.form.valid) {
       const uid = this.randomId();
-      this.service
-        .addNewUser({
-          firstName: this.firstName?.value,
-          lastName: this.lastName?.value,
-          email: this.email?.value,
-          password: this.password?.value,
-          id: uid,
-        })
-        .subscribe(() => {
-          this.router.navigate(['/login']);
-        });
+
+      this.service.checkIfAddressEmailExist(this.email?.value).subscribe({
+        next: () => {
+          this.showMessage = false;
+
+          this.service
+            .addNewUser({
+              firstName: this.firstName?.value,
+              lastName: this.lastName?.value,
+              email: this.email?.value,
+              password: this.password?.value,
+              id: uid,
+            })
+            .subscribe(() => {
+              this.router.navigate(['/login']);
+            });
+          this.form.reset();
+        },
+        error: (e) => {
+          this.showMessage = true;
+          this.errorMessage = e;
+        },
+      });
     }
   }
 

@@ -1,7 +1,16 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { User } from '../utilities/User';
-import { Observable, map, Subject, BehaviorSubject } from 'rxjs';
+import {
+  Observable,
+  BehaviorSubject,
+  tap,
+  filter,
+  switchMap,
+  throwIfEmpty,
+  map,
+  count,
+} from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -18,23 +27,27 @@ export class UserService {
   }
 
   getUserById(id: number): Observable<User> {
-    return this.http.get<User>(`${this.api}/users`);
+    return this.http.get<User>(`${this.api}/users/${id}`);
   }
 
-  addNewUser(user: User) {
+  addNewUser(user: User): Observable<User> {
     return this.http.post<User>(`${this.api}/users`, user);
   }
 
-  loginWithEmail(email: string, password: string) {
+  loginWithEmail(email: string, password: string): Observable<User> {
     return this.http.get<User[]>(`${this.api}/users`).pipe(
-      map((user) => {
-        user.forEach((key) => {
-          if (key.email === email && key.password === password) {
-            this.isUserLoggedIn.next(true);
-            return localStorage.setItem('uid', String(key.id));
-          }
-          return null;
-        });
+      switchMap((result) => {
+        return result;
+      }),
+      filter((user) => {
+        return user.email == email && user.password == password;
+      }),
+      tap((respone) => {
+        this.isUserLoggedIn.next(true);
+        localStorage.setItem('uid', String(respone.id));
+      }),
+      throwIfEmpty(() => {
+        throw new Error('Wrong email or password');
       })
     );
   }
@@ -46,5 +59,22 @@ export class UserService {
 
   getUid() {
     return localStorage.getItem('uid');
+  }
+
+  checkIfAddressEmailExist(email: string) {
+    return this.http.get<User[]>(`${this.api}/users`).pipe(
+      switchMap((result) => {
+        return result;
+      }),
+      filter((user) => {
+        return user.email == email;
+      }),
+      count(),
+      map((res) => {
+        if (res > 0) {
+          throw new Error('Email is already taken');
+        }
+      })
+    );
   }
 }
