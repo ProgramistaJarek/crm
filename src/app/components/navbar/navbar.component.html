@@ -4,6 +4,18 @@
     <button mat-button routerLink="/home">Home</button>
     <button mat-button routerLink="/about">About</button>
     <button mat-button routerLink="/contact">Contact</button>
+    <button mat-button routerLink="/dashboard" *ngIf="isLoggedin | async">
+      Dashboard
+    </button>
   </nav>
-  <button mat-button routerLink="/login">Login</button>
+  <button
+    mat-button
+    routerLink="/login"
+    *ngIf="!(isLoggedin | async); else showProfile"
+  >
+    Login
+  </button>
+  <ng-template #showProfile>
+    <button mat-button (click)="onLogout()">Logout</button>
+  </ng-template>
 </header>
