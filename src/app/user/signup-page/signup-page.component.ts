@@ -79,7 +79,6 @@ export class SignupPageComponent implements OnInit {
 
   onSubmit() {
     if (this.form.valid) {
-      console.log('add');
       this.service
         .addNewUser({
           firstName: this.firstName?.value,
