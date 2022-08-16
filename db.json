@@ -1,0 +1,11 @@
+{
+  "users": [
+    {
+      "firstName": "admin",
+      "lastName": "admin",
+      "email": "admin@admin.pl",
+      "password": "admin",
+      "id": 9963352436646
+    }
+  ]
+}

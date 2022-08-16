@@ -1,5 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+import { tap } from 'rxjs';
+
+import { UserService } from 'src/app/services/user.service';
+import { User } from 'src/app/utilities/User';
 
 @Component({
   selector: 'app-signup-page',
@@ -8,8 +13,9 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 })
 export class SignupPageComponent implements OnInit {
   form!: FormGroup;
+  user!: User;
 
-  constructor() {}
+  constructor(private service: UserService, private router: Router) {}
 
   ngOnInit(): void {
     this.form = new FormGroup({
@@ -72,6 +78,23 @@ export class SignupPageComponent implements OnInit {
   }
 
   onSubmit() {
-    console.log('rejestracja nie dziala', this.passwordDoesMatch);
+    if (this.form.valid) {
+      console.log('add');
+      this.service
+        .addNewUser({
+          firstName: this.firstName?.value,
+          lastName: this.lastName?.value,
+          email: this.email?.value,
+          password: this.password?.value,
+          id: this.randomId(),
+        })
+        .subscribe(() => {
+          this.router.navigate(['/login']);
+        });
+    }
+  }
+
+  randomId(): number {
+    return Date.now() * Math.floor(Math.random() * 10);
   }
 }
