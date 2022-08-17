@@ -8,21 +8,20 @@ import { ContactComponent } from 'src/app/components/contact/contact.component';
 const routes: Routes = [
   {
     path: '',
-    component: HomepageComponent,
-    children: [
-      {
-        path: 'about',
-        component: AboutComponent,
-      },
-      {
-        path: 'home',
-        component: MainComponent,
-      },
-      {
-        path: 'contact',
-        component: ContactComponent,
-      },
-    ],
+    redirectTo: '/home',
+    pathMatch: 'full',
+  },
+  {
+    path: 'home',
+    component: MainComponent,
+  },
+  {
+    path: 'about',
+    component: AboutComponent,
+  },
+  {
+    path: 'contact',
+    component: ContactComponent,
   },
 ];
 
