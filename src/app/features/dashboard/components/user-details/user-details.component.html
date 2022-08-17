@@ -1,0 +1,91 @@
+<h1 mat-dialog-title>{{ data.name }}</h1>
+<div mat-dialog-content>
+  <div *ngIf="!edit" class="flex">
+    <div class="mr-4">
+      <div class="flex flex-col">
+        <p class="flex items-center">
+          <mat-icon class="mr-2">email</mat-icon>{{ data.email }}
+        </p>
+
+        <p class="flex items-center">
+          <mat-icon class="mr-2">phone</mat-icon>{{ data.phone }}
+        </p>
+
+        <p class="flex items-center">
+          <mat-icon class="mr-2">home</mat-icon>{{ data.website }}
+        </p>
+
+        <p class="flex items-center">
+          <mat-icon class="mr-2">location_on</mat-icon>{{ data.address.city }}
+        </p>
+      </div>
+    </div>
+
+    <div class="ml-4">
+      <p class="flex items-center">
+        <mat-icon class="mr-2">business</mat-icon>{{ data.company.name }}
+      </p>
+
+      <p>
+        {{ data.company.catchPhrase }}
+      </p>
+
+      <p>
+        {{ data.company.bs }}
+      </p>
+    </div>
+  </div>
+
+  <form *ngIf="edit" class="flex" [formGroup]="profileForm">
+    <div class="mr-4">
+      <div class="flex flex-col">
+        <mat-form-field appearance="legacy">
+          <input matInput formControlName="email" />
+          <mat-icon matSuffix>email</mat-icon>
+        </mat-form-field>
+
+        <mat-form-field appearance="legacy">
+          <input matInput formControlName="phone" />
+          <mat-icon matSuffix>phone</mat-icon>
+        </mat-form-field>
+
+        <mat-form-field appearance="legacy">
+          <input matInput formControlName="website" />
+          <mat-icon matSuffix>home</mat-icon>
+        </mat-form-field>
+
+        <mat-form-field appearance="legacy">
+          <input matInput formControlName="city" />
+          <mat-icon matSuffix>location_on</mat-icon>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="ml-4">
+      <div class="flex flex-col">
+        <mat-form-field appearance="legacy">
+          <input matInput formControlName="companyName" />
+          <mat-icon matSuffix>business</mat-icon>
+        </mat-form-field>
+
+        <mat-form-field appearance="legacy">
+          <input matInput formControlName="phrase" />
+        </mat-form-field>
+
+        <mat-form-field appearance="legacy">
+          <input matInput value="{{ data.company.bs }}" />
+        </mat-form-field>
+      </div>
+    </div>
+  </form>
+</div>
+
+<div mat-dialog-actions>
+  <button mat-button mat-dialog-close>Close</button>
+  <button mat-button (click)="changeEdit()">
+    {{ !edit ? "Edit" : "Back" }}
+  </button>
+  <button mat-button mat-dialog-close *ngIf="edit" (click)="saveChanges()">
+    Save
+  </button>
+</div>
