@@ -6,6 +6,7 @@ import { RouterModule } from '@angular/router';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 import { UserRoutingModule } from './user-routing.module';
 
@@ -23,6 +24,7 @@ import { ProfilePageComponent } from './profile-page/profile-page.component';
     MatButtonModule,
     UserRoutingModule,
     RouterModule,
+    MatSnackBarModule,
   ],
 })
 export class UserModule {}

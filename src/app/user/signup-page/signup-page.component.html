@@ -41,12 +41,13 @@
   <p>
     <mat-form-field class="mr-2" appearance="outline">
       <mat-label>Password</mat-label>
-      <input matInput formControlName="password" />
-      <mat-error *ngIf="password?.invalid && password?.dirty">
-        Your password is too short
+      <input matInput formControlName="password" (keyup)="passwordCheck()" />
+      <mat-error *ngIf="password?.dirty">
+        <p *ngIf="password?.hasError('tooWeak')">Your password is too weak</p>
+        <p *ngIf="!password?.invalid">Your password is too shortweak</p>
       </mat-error>
+      <span> siła: {{ passwordStrength }}</span>
     </mat-form-field>
-
     <mat-form-field class="ml-2" appearance="outline">
       <mat-label>Repeat password</mat-label>
       <input matInput formControlName="repeatPassword" />

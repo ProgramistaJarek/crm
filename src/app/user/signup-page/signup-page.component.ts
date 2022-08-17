@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { UserService } from 'src/app/services/user.service';
 import { User } from 'src/app/utilities/User';
@@ -16,7 +17,21 @@ export class SignupPageComponent implements OnInit {
   showMessage: boolean = false;
   errorMessage!: string;
 
-  constructor(private service: UserService, private router: Router) {}
+  regexForLowerLetter: RegExp = /[a-z]/;
+  regexForUpperLetter: RegExp = /[A-Z]/;
+  regexForNumber: RegExp = /\d/;
+  regexForSpecialCharacter: RegExp = /[-+_!@#$%^&*.,?{}()\[\]]/;
+  hasLower: boolean = false;
+  hasUpper: boolean = false;
+  hasNum: boolean = false;
+  hasSpecial: boolean = false;
+  passwordStrength: number = 0;
+
+  constructor(
+    private service: UserService,
+    private router: Router,
+    private snackBar: MatSnackBar
+  ) {}
 
   ngOnInit(): void {
     this.form = new FormGroup({
@@ -26,7 +41,7 @@ export class SignupPageComponent implements OnInit {
       repeatEmail: new FormControl(''),
       password: new FormControl('', [
         Validators.required,
-        Validators.minLength(5),
+        Validators.minLength(6),
       ]),
       repeatPassword: new FormControl('', []),
     });
@@ -78,6 +93,27 @@ export class SignupPageComponent implements OnInit {
     return matched;
   }
 
+  passwordCheck() {
+    this.passwordStrength = 0;
+
+    this.hasLower = this.regexForLowerLetter.test(this.password?.value)
+      ? true
+      : false;
+
+    this.hasUpper = this.regexForUpperLetter.test(this.password?.value)
+      ? true
+      : false;
+
+    this.hasNum = this.regexForNumber.test(this.password?.value) ? true : false;
+
+    this.hasSpecial = this.regexForSpecialCharacter.test(this.password?.value)
+      ? true
+      : false;
+
+    const checks = [this.hasLower, this.hasUpper, this.hasNum, this.hasSpecial];
+    checks.forEach((e) => (e ? this.passwordStrength++ : null));
+  }
+
   onSubmit() {
     if (this.form.valid) {
       const uid = this.randomId();
@@ -94,10 +130,12 @@ export class SignupPageComponent implements OnInit {
               password: this.password?.value,
               id: uid,
             })
-            .subscribe(() => {
-              this.router.navigate(['/login']);
-            });
+            .subscribe();
+          this.router.navigate(['/login']);
           this.form.reset();
+          this.snackBar.open('Success', 'ok', {
+            duration: 3000,
+          });
         },
         error: (e) => {
           this.showMessage = true;

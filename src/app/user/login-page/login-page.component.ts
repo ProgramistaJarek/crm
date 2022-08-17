@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { MatSnackBar } from '@angular/material/snack-bar';
+
 import { UserService } from 'src/app/services/user.service';
 
 @Component({
@@ -12,7 +14,7 @@ export class LoginPageComponent implements OnInit {
   showMessage: boolean = false;
   errorMessage!: string;
 
-  constructor(private service: UserService) {}
+  constructor(private service: UserService, private snackBar: MatSnackBar) {}
 
   ngOnInit(): void {
     this.form = new FormGroup({
@@ -37,7 +39,12 @@ export class LoginPageComponent implements OnInit {
       this.service
         .loginWithEmail(this.email?.value, this.password?.value)
         .subscribe({
-          next: () => (this.showMessage = false),
+          next: () => {
+            this.showMessage = false;
+            this.snackBar.open('Success', 'ok', {
+              duration: 3000,
+            });
+          },
           error: (e) => {
             this.showMessage = true;
             this.errorMessage = e;
