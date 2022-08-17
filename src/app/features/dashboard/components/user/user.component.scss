@@ -1,7 +1,7 @@
 .mat-row .mat-cell {
-  cursor: pointer;
+  @apply cursor-pointer;
 }
 
 .mat-row:hover .mat-cell {
-  border-color: black;
+  @apply border-black;
 }
