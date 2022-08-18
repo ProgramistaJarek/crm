@@ -3,12 +3,12 @@ import { Component, Input, OnChanges } from '@angular/core';
 @Component({
   selector: 'app-password-strength-bar',
   template: `
-    <div class="strength">
-      <ul class="strengthBar mt-2">
-        <li class="point" [style.background-color]="bar1"></li>
-        <li class="point" [style.background-color]="bar2"></li>
-        <li class="point" [style.background-color]="bar3"></li>
-        <li class="point" [style.background-color]="bar4"></li>
+    <div class="flex w-3/4 mx-auto mb-4">
+      <ul class="flex grow list-none m-0 p-0 align-[2px] mt-2">
+        <li class="bar" [style.background-color]="bar1"></li>
+        <li class="bar" [style.background-color]="bar2"></li>
+        <li class="bar" [style.background-color]="bar3"></li>
+        <li class="bar" [style.background-color]="bar4"></li>
       </ul>
     </div>
   `,
