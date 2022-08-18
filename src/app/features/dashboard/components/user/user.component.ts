@@ -1,4 +1,6 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { MatDialog } from '@angular/material/dialog';
 
 import { UserDetails } from 'src/app/utilities/UserDetails';
 
@@ -9,7 +11,7 @@ import { UserDetails } from 'src/app/utilities/UserDetails';
 })
 export class UserComponent {
   @Input() users!: UserDetails[];
-  @Output() showDeatils: EventEmitter<UserDetails> = new EventEmitter();
+  @Output() showDeatils: EventEmitter<number> = new EventEmitter();
   displayedColumns: string[] = [
     'position',
     'name',
@@ -18,9 +20,15 @@ export class UserComponent {
     'phone',
   ];
 
-  constructor() {}
+  constructor(private router: ActivatedRoute, public dialog: MatDialog) {
+    this.router.queryParams.subscribe((params) => {
+      if (params['id']) {
+        this.onShowDeatails(params['id']);
+      }
+    });
+  }
 
-  onShowDeatails(user: UserDetails) {
+  onShowDeatails(user: number) {
     this.showDeatils.emit(user);
   }
 }

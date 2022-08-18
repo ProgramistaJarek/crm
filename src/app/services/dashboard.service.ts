@@ -16,6 +16,10 @@ export class DashboardService {
     return this.http.get<UserDetails[]>(`${this.url}`);
   }
 
+  getUser(id: number): Observable<UserDetails> {
+    return this.http.get<UserDetails>(`${this.url}/${id}`);
+  }
+
   updateUser(data: UserDetails): Observable<UserDetails> {
     return this.http.put<UserDetails>(`${this.url}/${data.id}`, data);
   }

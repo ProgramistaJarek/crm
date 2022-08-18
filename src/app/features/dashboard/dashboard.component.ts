@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
+import { Router } from '@angular/router';
 
 import { MatDialog } from '@angular/material/dialog';
 
@@ -17,22 +18,29 @@ export class DashboardComponent implements OnInit {
   users$!: Observable<UserDetails[]>;
   displayedColumns: string[] = ['position', 'name', 'email', 'phone'];
 
-  constructor(private service: DashboardService, private dialog: MatDialog) {}
+  constructor(
+    private service: DashboardService,
+    private dialog: MatDialog,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
     this.users$ = this.service.getUsers();
   }
 
-  showDeatils(user: UserDetails) {
-    const dialogRef = this.dialog.open(UserDetailsComponent, {
-      data: user,
-    });
+  showDeatils(id: number) {
+    this.service.getUser(id).subscribe((result) => {
+      const dialogRef = this.dialog.open(UserDetailsComponent, {
+        data: result,
+      });
 
-    dialogRef.afterClosed().subscribe((result: UserDetails) => {
-      if (result) {
-        this.service.updateUser(result).subscribe();
-        this.users$ = this.service.getUsers();
-      }
+      dialogRef.afterClosed().subscribe((result: UserDetails) => {
+        if (result) {
+          this.service.updateUser(result).subscribe();
+          this.users$ = this.service.getUsers();
+        }
+        this.router.navigate(['dashboard']);
+      });
     });
   }
 }

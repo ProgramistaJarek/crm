@@ -10,12 +10,6 @@ import { UserDetails } from 'src/app/utilities/UserDetails';
   styleUrls: ['./user-details.component.scss'],
 })
 export class UserDetailsComponent {
-  edit = false;
-  constructor(
-    @Inject(MAT_DIALOG_DATA) public data: UserDetails,
-    private dialogRef: MatDialogRef<UserDetailsComponent>
-  ) {}
-
   profileForm = new FormGroup({
     email: new FormControl(this.data.email),
     phone: new FormControl(this.data.phone),
@@ -25,6 +19,12 @@ export class UserDetailsComponent {
     companyName: new FormControl(this.data.company.name),
     phrase: new FormControl(this.data.company.catchPhrase),
   });
+  edit = false;
+
+  constructor(
+    @Inject(MAT_DIALOG_DATA) public data: UserDetails,
+    private dialogRef: MatDialogRef<UserDetailsComponent>
+  ) {}
 
   changeEdit() {
     this.edit = !this.edit;
