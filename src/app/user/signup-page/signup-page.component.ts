@@ -38,7 +38,6 @@ export class SignupPageComponent implements OnInit {
       firstName: new FormControl('', [Validators.required]),
       lastName: new FormControl('', [Validators.required]),
       email: new FormControl('', [Validators.required, Validators.email]),
-      repeatEmail: new FormControl(''),
       password: new FormControl('', [
         Validators.required,
         Validators.minLength(6),
@@ -57,21 +56,6 @@ export class SignupPageComponent implements OnInit {
 
   get email() {
     return this.form?.get('email');
-  }
-
-  get emailConfirm() {
-    return this.form?.get('repeatEmail');
-  }
-
-  get emailDoesMatch() {
-    const matched = this.email?.value === this.emailConfirm?.value;
-
-    if (matched) {
-      this.form?.get('repeatEmail')?.setErrors(null);
-    } else {
-      this.form?.get('repeatEmail')?.setErrors({ notMatched: true });
-    }
-    return matched;
   }
 
   get password() {

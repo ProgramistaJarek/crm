@@ -20,10 +20,10 @@
     </mat-form-field>
   </p>
 
-  <mat-form-field class="w-full" appearance="outline">
+  <mat-form-field class="w-full mb-3" appearance="outline">
     <mat-label>Email</mat-label>
     <input matInput formControlName="email" />
-    <mat-error *ngIf="email?.invalid && email?.dirty">
+    <mat-error *ngIf="email?.invalid">
       You must enter a valid email address
     </mat-error>
   </mat-form-field>
@@ -38,9 +38,8 @@
           formControlName="password"
           (keyup)="passwordCheck()"
         />
-        <mat-error *ngIf="password?.dirty">
-          <p *ngIf="password?.hasError('tooWeak')">Your password is too weak</p>
-          <p *ngIf="!password?.invalid">Your password is too shortweak</p>
+        <mat-error *ngIf="password?.invalid">
+          <p *ngIf="password?.invalid">Your password is too short</p>
         </mat-error>
       </mat-form-field>
 
