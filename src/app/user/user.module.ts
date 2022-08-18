@@ -12,10 +12,14 @@ import { UserRoutingModule } from './user-routing.module';
 
 import { LoginPageComponent } from './login-page/login-page.component';
 import { SignupPageComponent } from './signup-page/signup-page.component';
-import { ProfilePageComponent } from './profile-page/profile-page.component';
+import { PasswordStrengthBarComponent } from './password-strength-bar/password-strength-bar.component';
 
 @NgModule({
-  declarations: [LoginPageComponent, SignupPageComponent, ProfilePageComponent],
+  declarations: [
+    LoginPageComponent,
+    SignupPageComponent,
+    PasswordStrengthBarComponent,
+  ],
   imports: [
     CommonModule,
     ReactiveFormsModule,

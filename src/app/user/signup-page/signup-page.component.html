@@ -46,8 +46,10 @@
         <p *ngIf="password?.hasError('tooWeak')">Your password is too weak</p>
         <p *ngIf="!password?.invalid">Your password is too shortweak</p>
       </mat-error>
-      <span> siła: {{ passwordStrength }}</span>
     </mat-form-field>
+    <app-password-strength-bar
+      [barNumber]="passwordStrength"
+    ></app-password-strength-bar>
 
     <mat-form-field class="ml-2" appearance="outline">
       <mat-label>Repeat password</mat-label>

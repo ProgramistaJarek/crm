@@ -20,6 +20,7 @@ export class UserDetailsComponent {
     email: new FormControl(this.data.email),
     phone: new FormControl(this.data.phone),
     website: new FormControl(this.data.website),
+    username: new FormControl(this.data.username),
     city: new FormControl(this.data.address.city),
     companyName: new FormControl(this.data.company.name),
     phrase: new FormControl(this.data.company.catchPhrase),
@@ -35,6 +36,7 @@ export class UserDetailsComponent {
       email: this.profileForm.value.email,
       phone: this.profileForm.value.phone,
       website: this.profileForm.value.website,
+      username: this.profileForm.value.username,
       address: { ...this.data.address, city: this.profileForm.value.city },
       company: {
         ...this.data.company,

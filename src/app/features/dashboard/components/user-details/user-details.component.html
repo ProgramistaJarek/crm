@@ -1,4 +1,12 @@
-<h1 mat-dialog-title>{{ data.name }}</h1>
+<div mat-dialog-title>
+  <img
+    src="https://avatars.dicebear.com/api/pixel-art/:{{
+      data.name
+    }}.svg?radius=50"
+    alt="avatar"
+  />
+  <h1>{{ data.name }}</h1>
+</div>
 <div mat-dialog-content>
   <div *ngIf="!edit" class="flex">
     <div class="mr-4">
@@ -23,15 +31,15 @@
 
     <div class="ml-4">
       <p class="flex items-center">
+        <mat-icon>person</mat-icon>{{ data.username }}
+      </p>
+
+      <p class="flex items-center">
         <mat-icon class="mr-2">business</mat-icon>{{ data.company.name }}
       </p>
 
       <p>
         {{ data.company.catchPhrase }}
-      </p>
-
-      <p>
-        {{ data.company.bs }}
       </p>
     </div>
   </div>
@@ -64,16 +72,17 @@
     <div class="ml-4">
       <div class="flex flex-col">
         <mat-form-field appearance="legacy">
+          <input matInput formControlName="username" />
+          <mat-icon matSuffix>person</mat-icon>
+        </mat-form-field>
+
+        <mat-form-field appearance="legacy">
           <input matInput formControlName="companyName" />
           <mat-icon matSuffix>business</mat-icon>
         </mat-form-field>
 
         <mat-form-field appearance="legacy">
           <input matInput formControlName="phrase" />
-        </mat-form-field>
-
-        <mat-form-field appearance="legacy">
-          <input matInput value="{{ data.company.bs }}" />
         </mat-form-field>
       </div>
     </div>
@@ -85,7 +94,13 @@
   <button mat-button (click)="changeEdit()">
     {{ !edit ? "Edit" : "Back" }}
   </button>
-  <button mat-button mat-dialog-close *ngIf="edit" (click)="saveChanges()">
+  <button
+    mat-button
+    color="primary"
+    mat-dialog-close
+    *ngIf="edit"
+    (click)="saveChanges()"
+  >
     Save
   </button>
 </div>

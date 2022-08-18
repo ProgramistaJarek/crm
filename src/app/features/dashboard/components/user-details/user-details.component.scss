@@ -1,4 +1,11 @@
+.mat-dialog-title {
+  @apply flex items-center;
+
+  img {
+    @apply w-12 mr-2;
+  }
+}
+
 .mat-dialog-content {
-  display: flex;
-  margin-top: 1rem;
+  @apply flex mt-4;
 }
