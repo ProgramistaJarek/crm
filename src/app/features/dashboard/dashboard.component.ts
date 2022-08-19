@@ -29,9 +29,9 @@ export class DashboardComponent implements OnInit {
   }
 
   showDeatils(uid: number) {
-    this.service.getUser(uid).subscribe((result) => {
+    this.service.getUser(uid).subscribe((user) => {
       const dialogRef = this.dialog.open(UserDetailsComponent, {
-        data: result,
+        data: { user, action: false },
       });
 
       dialogRef.afterClosed().subscribe((result: UserDetails) => {
@@ -50,6 +50,20 @@ export class DashboardComponent implements OnInit {
     dialogRef.afterClosed().subscribe((result: boolean) => {
       if (result) {
         this.service.deleteUser(uid).subscribe();
+        this.users$ = this.service.getUsers();
+      }
+      this.router.navigate(['dashboard']);
+    });
+  }
+
+  addUser() {
+    const dialogRef = this.dialog.open(UserDetailsComponent, {
+      data: { action: true },
+    });
+
+    dialogRef.afterClosed().subscribe((result: UserDetails) => {
+      if (result) {
+        this.service.addNewUser(result).subscribe();
         this.users$ = this.service.getUsers();
       }
       this.router.navigate(['dashboard']);

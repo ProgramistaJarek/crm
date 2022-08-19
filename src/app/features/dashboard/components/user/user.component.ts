@@ -13,6 +13,7 @@ export class UserComponent {
   @Input() users!: UserDetails[];
   @Output() showDeatils: EventEmitter<number> = new EventEmitter();
   @Output() deleteUser: EventEmitter<number> = new EventEmitter();
+  @Output() addUser: EventEmitter<any> = new EventEmitter();
   displayedColumns: string[] = [
     'position',
     'name',
@@ -30,6 +31,9 @@ export class UserComponent {
       if (params['action'] === 'delete') {
         this.onDelete(params['id']);
       }
+      if (params['action'] === 'add') {
+        this.onAdd();
+      }
     });
   }
 
@@ -39,5 +43,9 @@ export class UserComponent {
 
   onDelete(uid: number) {
     this.deleteUser.emit(uid);
+  }
+
+  onAdd() {
+    this.addUser.emit();
   }
 }

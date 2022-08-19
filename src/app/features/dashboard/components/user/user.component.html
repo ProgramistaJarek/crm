@@ -50,7 +50,14 @@
   <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
   <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
 </table>
-
+<button
+  mat-button
+  color="primary"
+  routerLink="user"
+  [queryParams]="{ action: 'add' }"
+>
+  <mat-icon>add</mat-icon> Add new user
+</button>
 <!-- <mat-card class="m-4 w-96">
   <mat-card-title>{{ user.name }}</mat-card-title>
   <mat-card-subtitle> Email: {{ user.email }} </mat-card-subtitle>

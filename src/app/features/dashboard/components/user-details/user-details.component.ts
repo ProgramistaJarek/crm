@@ -11,20 +11,26 @@ import { UserDetails } from 'src/app/utilities/UserDetails';
 })
 export class UserDetailsComponent {
   profileForm = new FormGroup({
-    email: new FormControl(this.data.email),
-    phone: new FormControl(this.data.phone),
-    website: new FormControl(this.data.website),
-    username: new FormControl(this.data.username),
-    city: new FormControl(this.data.address.city),
-    companyName: new FormControl(this.data.company.name),
-    phrase: new FormControl(this.data.company.catchPhrase),
+    name: new FormControl(this.data.user?.name),
+    email: new FormControl(this.data.user?.email),
+    phone: new FormControl(this.data.user?.phone),
+    website: new FormControl(this.data.user?.website),
+    username: new FormControl(this.data.user?.username),
+    city: new FormControl(this.data.user?.address.city),
+    companyName: new FormControl(this.data.user?.company.name),
+    phrase: new FormControl(this.data.user?.company.catchPhrase),
   });
   edit = false;
 
   constructor(
-    @Inject(MAT_DIALOG_DATA) public data: UserDetails,
+    @Inject(MAT_DIALOG_DATA)
+    public data: { user?: UserDetails; action: boolean },
     private dialogRef: MatDialogRef<UserDetailsComponent>
-  ) {}
+  ) {
+    if (data.action == true) {
+      this.edit = true;
+    }
+  }
 
   changeEdit() {
     this.edit = !this.edit;
@@ -32,14 +38,18 @@ export class UserDetailsComponent {
 
   saveChanges() {
     const data = {
-      ...this.data,
+      ...this.data.user,
+      name: this.profileForm.value.name,
       email: this.profileForm.value.email,
       phone: this.profileForm.value.phone,
       website: this.profileForm.value.website,
       username: this.profileForm.value.username,
-      address: { ...this.data.address, city: this.profileForm.value.city },
+      address: {
+        ...this.data.user?.address,
+        city: this.profileForm.value.city,
+      },
       company: {
-        ...this.data.company,
+        ...this.data.user?.company,
         name: this.profileForm.value.companyName,
         catchPhrase: this.profileForm.value.phrase,
       },

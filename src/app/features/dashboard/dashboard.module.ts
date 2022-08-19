@@ -8,6 +8,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatTableModule } from '@angular/material/table';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 import { DashboardRoutingModule } from './dashboard-routing.module';
 import { DashboardComponent } from './dashboard.component';
@@ -32,6 +33,7 @@ import { DialogDeleteUser } from './dashboard.component';
     MatFormFieldModule,
     ReactiveFormsModule,
     MatTableModule,
+    MatProgressSpinnerModule,
   ],
 })
 export class DashboardModule {}

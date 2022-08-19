@@ -1,45 +1,52 @@
 <div mat-dialog-title>
   <img
     src="https://avatars.dicebear.com/api/pixel-art/:{{
-      data.name
+      data.user?.name
     }}.svg?radius=50&backgroundColor=lightgray"
     alt="avatar"
   />
-  <h1>{{ data.name }}</h1>
+  <h1>{{ data.user?.name }}</h1>
+  <form *ngIf="edit" class="flex" [formGroup]="profileForm">
+    <mat-form-field appearance="legacy">
+      <input matInput formControlName="name" />
+      <mat-icon matSuffix>name</mat-icon>
+    </mat-form-field>
+  </form>
 </div>
 <div mat-dialog-content>
   <div *ngIf="!edit" class="flex">
     <div class="mr-4">
       <div class="flex flex-col">
         <p class="flex items-center">
-          <mat-icon class="mr-2">email</mat-icon>{{ data.email }}
+          <mat-icon class="mr-2">email</mat-icon>{{ data.user?.email }}
         </p>
 
         <p class="flex items-center">
-          <mat-icon class="mr-2">phone</mat-icon>{{ data.phone }}
+          <mat-icon class="mr-2">phone</mat-icon>{{ data.user?.phone }}
         </p>
 
         <p class="flex items-center">
-          <mat-icon class="mr-2">home</mat-icon>{{ data.website }}
+          <mat-icon class="mr-2">home</mat-icon>{{ data.user?.website }}
         </p>
 
         <p class="flex items-center">
-          <mat-icon class="mr-2">location_on</mat-icon>{{ data.address.city }}
+          <mat-icon class="mr-2">location_on</mat-icon
+          >{{ data.user?.address?.city }}
         </p>
       </div>
     </div>
 
     <div class="ml-4">
       <p class="flex items-center">
-        <mat-icon>person</mat-icon>{{ data.username }}
+        <mat-icon>person</mat-icon>{{ data.user?.username }}
       </p>
 
       <p class="flex items-center">
-        <mat-icon class="mr-2">business</mat-icon>{{ data.company.name }}
+        <mat-icon class="mr-2">business</mat-icon>{{ data.user?.company?.name }}
       </p>
 
       <p>
-        {{ data.company.catchPhrase }}
+        {{ data.user?.company?.catchPhrase }}
       </p>
     </div>
   </div>
@@ -91,7 +98,7 @@
 
 <div mat-dialog-actions>
   <button mat-button mat-dialog-close>Close</button>
-  <button mat-button (click)="changeEdit()">
+  <button mat-button (click)="changeEdit()" *ngIf="!data.action">
     {{ !edit ? "Edit" : "Back" }}
   </button>
   <button

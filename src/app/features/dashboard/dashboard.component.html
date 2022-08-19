@@ -1,7 +1,14 @@
-<div *ngIf="users$ | async as users" class="container mx-auto w-full">
+<div
+  *ngIf="users$ | async as users; else loader"
+  class="container mx-auto w-full"
+>
   <app-user
     [users]="users"
     (showDeatils)="showDeatils($event)"
     (deleteUser)="deleteUser($event)"
+    (addUser)="addUser()"
   ></app-user>
 </div>
+<ng-template #loader>
+  <mat-spinner class="mx-auto"></mat-spinner>
+</ng-template>
