@@ -1,114 +1,195 @@
-<div mat-dialog-title>
-  <img
-    src="https://avatars.dicebear.com/api/pixel-art/:{{
-      data.user?.name
-    }}.svg?radius=50&backgroundColor=lightgray"
-    alt="avatar"
-  />
-  <h1>{{ data.user?.name }}</h1>
-  <form *ngIf="edit && data.action" class="flex" [formGroup]="profileForm">
-    <mat-form-field appearance="legacy">
-      <input matInput formControlName="name" />
-      <mat-icon matSuffix>name</mat-icon>
-    </mat-form-field>
-  </form>
-</div>
-<div mat-dialog-content>
-  <div *ngIf="!edit" class="flex">
-    <div class="mr-4">
-      <div class="flex flex-col">
-        <p class="flex items-center">
-          <mat-icon class="mr-2">email</mat-icon>{{ data.user?.email }}
-        </p>
+<div *ngIf="!data.action; else addUser">
+  <div *ngIf="data.user$ | async as user; else loader">
+    <div mat-dialog-title>
+      <img
+        src="https://avatars.dicebear.com/api/pixel-art/:{{
+          user.name
+        }}.svg?radius=50&backgroundColor=lightgray"
+        alt="avatar"
+      />
+      <h1>{{ user?.name }}</h1>
+    </div>
+    <div mat-dialog-content>
+      <div *ngIf="!edit" class="flex">
+        <div class="mr-4">
+          <div class="flex flex-col">
+            <p class="flex items-center">
+              <mat-icon class="mr-2">email</mat-icon>{{ user?.email }}
+            </p>
 
-        <p class="flex items-center">
-          <mat-icon class="mr-2">phone</mat-icon>{{ data.user?.phone }}
-        </p>
+            <p class="flex items-center">
+              <mat-icon class="mr-2">phone</mat-icon>{{ user?.phone }}
+            </p>
 
-        <p class="flex items-center">
-          <mat-icon class="mr-2">home</mat-icon>{{ data.user?.website }}
-        </p>
+            <p class="flex items-center">
+              <mat-icon class="mr-2">home</mat-icon>{{ user.website }}
+            </p>
 
-        <p class="flex items-center">
-          <mat-icon class="mr-2">location_on</mat-icon
-          >{{ data.user?.address?.city }}
-        </p>
+            <p class="flex items-center">
+              <mat-icon class="mr-2">location_on</mat-icon
+              >{{ user.address.city }}
+            </p>
+          </div>
+        </div>
+
+        <div class="ml-4">
+          <p class="flex items-center">
+            <mat-icon>person</mat-icon>{{ user?.username }}
+          </p>
+
+          <p class="flex items-center">
+            <mat-icon class="mr-2">business</mat-icon>{{ user?.company?.name }}
+          </p>
+
+          <p>
+            {{ user?.company?.catchPhrase }}
+          </p>
+        </div>
       </div>
+
+      <form
+        *ngIf="edit"
+        class="flex"
+        [formGroup]="profileForm"
+        autocomplete="off"
+      >
+        <div class="mr-4">
+          <div class="flex flex-col">
+            <mat-form-field appearance="legacy">
+              <input matInput formControlName="email" />
+              <mat-icon matSuffix>email</mat-icon>
+            </mat-form-field>
+
+            <mat-form-field appearance="legacy">
+              <input matInput formControlName="phone" />
+              <mat-icon matSuffix>phone</mat-icon>
+            </mat-form-field>
+
+            <mat-form-field appearance="legacy">
+              <input matInput formControlName="website" />
+              <mat-icon matSuffix>home</mat-icon>
+            </mat-form-field>
+
+            <mat-form-field appearance="legacy">
+              <input matInput formControlName="city" />
+              <mat-icon matSuffix>location_on</mat-icon>
+            </mat-form-field>
+          </div>
+        </div>
+
+        <div class="ml-4">
+          <div class="flex flex-col">
+            <mat-form-field appearance="legacy">
+              <input matInput formControlName="username" />
+              <mat-icon matSuffix>person</mat-icon>
+            </mat-form-field>
+
+            <mat-form-field appearance="legacy">
+              <input matInput formControlName="companyName" />
+              <mat-icon matSuffix>business</mat-icon>
+            </mat-form-field>
+
+            <mat-form-field appearance="legacy">
+              <input matInput formControlName="phrase" />
+            </mat-form-field>
+          </div>
+        </div>
+      </form>
     </div>
 
-    <div class="ml-4">
-      <p class="flex items-center">
-        <mat-icon>person</mat-icon>{{ data.user?.username }}
-      </p>
-
-      <p class="flex items-center">
-        <mat-icon class="mr-2">business</mat-icon>{{ data.user?.company?.name }}
-      </p>
-
-      <p>
-        {{ data.user?.company?.catchPhrase }}
-      </p>
+    <div mat-dialog-actions>
+      <button mat-button mat-dialog-close>Close</button>
+      <button mat-button (click)="changeEdit()" *ngIf="!data.action">
+        {{ !edit ? "Edit" : "Back" }}
+      </button>
+      <button
+        mat-button
+        color="primary"
+        mat-dialog-close
+        *ngIf="edit"
+        (click)="saveChanges(user)"
+        [disabled]="!profileForm.valid"
+      >
+        Save
+      </button>
     </div>
   </div>
 
-  <form *ngIf="edit" class="flex" [formGroup]="profileForm">
-    <div class="mr-4">
-      <div class="flex flex-col">
-        <mat-form-field appearance="legacy">
-          <input matInput formControlName="email" />
-          <mat-icon matSuffix>email</mat-icon>
-        </mat-form-field>
-
-        <mat-form-field appearance="legacy">
-          <input matInput formControlName="phone" />
-          <mat-icon matSuffix>phone</mat-icon>
-        </mat-form-field>
-
-        <mat-form-field appearance="legacy">
-          <input matInput formControlName="website" />
-          <mat-icon matSuffix>home</mat-icon>
-        </mat-form-field>
-
-        <mat-form-field appearance="legacy">
-          <input matInput formControlName="city" />
-          <mat-icon matSuffix>location_on</mat-icon>
-        </mat-form-field>
-      </div>
-    </div>
-
-    <div class="ml-4">
-      <div class="flex flex-col">
-        <mat-form-field appearance="legacy">
-          <input matInput formControlName="username" />
-          <mat-icon matSuffix>person</mat-icon>
-        </mat-form-field>
-
-        <mat-form-field appearance="legacy">
-          <input matInput formControlName="companyName" />
-          <mat-icon matSuffix>business</mat-icon>
-        </mat-form-field>
-
-        <mat-form-field appearance="legacy">
-          <input matInput formControlName="phrase" />
-        </mat-form-field>
-      </div>
-    </div>
-  </form>
+  <ng-template #loader>
+    <mat-spinner></mat-spinner>
+  </ng-template>
 </div>
 
-<div mat-dialog-actions>
-  <button mat-button mat-dialog-close>Close</button>
-  <button mat-button (click)="changeEdit()" *ngIf="!data.action">
-    {{ !edit ? "Edit" : "Back" }}
-  </button>
-  <button
-    mat-button
-    color="primary"
-    mat-dialog-close
-    *ngIf="edit"
-    (click)="saveChanges()"
-    [disabled]="!profileForm.valid"
-  >
-    Save
-  </button>
-</div>
+<ng-template #addUser>
+  <div mat-dialog-title>
+    <img
+      src="https://avatars.dicebear.com/api/pixel-art/:avatar.svg?radius=50&backgroundColor=lightgray"
+      alt="avatar"
+    />
+    <form class="flex" [formGroup]="profileForm" autocomplete="off">
+      <mat-form-field appearance="legacy">
+        <input matInput formControlName="name" />
+        <mat-icon matSuffix>name</mat-icon>
+      </mat-form-field>
+    </form>
+  </div>
+  <div mat-dialog-content>
+    <form class="flex" [formGroup]="profileForm" autocomplete="off">
+      <div class="mr-4">
+        <div class="flex flex-col">
+          <mat-form-field appearance="legacy">
+            <input matInput formControlName="email" />
+            <mat-icon matSuffix>email</mat-icon>
+          </mat-form-field>
+
+          <mat-form-field appearance="legacy">
+            <input matInput formControlName="phone" />
+            <mat-icon matSuffix>phone</mat-icon>
+          </mat-form-field>
+
+          <mat-form-field appearance="legacy">
+            <input matInput formControlName="website" />
+            <mat-icon matSuffix>home</mat-icon>
+          </mat-form-field>
+
+          <mat-form-field appearance="legacy">
+            <input matInput formControlName="city" />
+            <mat-icon matSuffix>location_on</mat-icon>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="ml-4">
+        <div class="flex flex-col">
+          <mat-form-field appearance="legacy">
+            <input matInput formControlName="username" />
+            <mat-icon matSuffix>person</mat-icon>
+          </mat-form-field>
+
+          <mat-form-field appearance="legacy">
+            <input matInput formControlName="companyName" />
+            <mat-icon matSuffix>business</mat-icon>
+          </mat-form-field>
+
+          <mat-form-field appearance="legacy">
+            <input matInput formControlName="phrase" />
+          </mat-form-field>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <div mat-dialog-actions>
+    <button mat-button mat-dialog-close>Close</button>
+    <button
+      mat-button
+      color="primary"
+      mat-dialog-close
+      *ngIf="edit"
+      (click)="saveChanges()"
+      [disabled]="!profileForm.valid"
+    >
+      Save
+    </button>
+  </div>
+</ng-template>
