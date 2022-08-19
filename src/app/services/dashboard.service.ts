@@ -23,4 +23,8 @@ export class DashboardService {
   updateUser(data: UserDetails): Observable<UserDetails> {
     return this.http.put<UserDetails>(`${this.url}/${data.id}`, data);
   }
+
+  deleteUser(id: number): Observable<UserDetails> {
+    return this.http.delete<UserDetails>(`${this.url}/${id}`);
+  }
 }

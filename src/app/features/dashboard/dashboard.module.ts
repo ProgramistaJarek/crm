@@ -13,9 +13,15 @@ import { DashboardRoutingModule } from './dashboard-routing.module';
 import { DashboardComponent } from './dashboard.component';
 import { UserComponent } from 'src/app/features/dashboard/components/user/user.component';
 import { UserDetailsComponent } from 'src/app/features/dashboard/components/user-details/user-details.component';
+import { DialogDeleteUser } from './dashboard.component';
 
 @NgModule({
-  declarations: [DashboardComponent, UserComponent, UserDetailsComponent],
+  declarations: [
+    DashboardComponent,
+    UserComponent,
+    UserDetailsComponent,
+    DialogDeleteUser,
+  ],
   imports: [
     CommonModule,
     DashboardRoutingModule,

@@ -1,3 +1,7 @@
 <div *ngIf="users$ | async as users" class="container mx-auto w-full">
-  <app-user [users]="users" (showDeatils)="showDeatils($event)"></app-user>
+  <app-user
+    [users]="users"
+    (showDeatils)="showDeatils($event)"
+    (deleteUser)="deleteUser($event)"
+  ></app-user>
 </div>

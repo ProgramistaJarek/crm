@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Router } from '@angular/router';
 
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 
 import { DashboardService } from 'src/app/services/dashboard.service';
 import { UserDetails } from 'src/app/utilities/UserDetails';
@@ -28,8 +28,8 @@ export class DashboardComponent implements OnInit {
     this.users$ = this.service.getUsers();
   }
 
-  showDeatils(id: number) {
-    this.service.getUser(id).subscribe((result) => {
+  showDeatils(uid: number) {
+    this.service.getUser(uid).subscribe((result) => {
       const dialogRef = this.dialog.open(UserDetailsComponent, {
         data: result,
       });
@@ -42,5 +42,38 @@ export class DashboardComponent implements OnInit {
         this.router.navigate(['dashboard']);
       });
     });
+  }
+
+  deleteUser(uid: number) {
+    const dialogRef = this.dialog.open(DialogDeleteUser, {});
+
+    dialogRef.afterClosed().subscribe((result: boolean) => {
+      if (result) {
+        this.service.deleteUser(uid).subscribe();
+        this.users$ = this.service.getUsers();
+      }
+      this.router.navigate(['dashboard']);
+    });
+  }
+}
+
+@Component({
+  selector: 'dialog-delete-user',
+  template: `
+    <h1 mat-dialog-title>Delete this user?</h1>
+
+    <div mat-dialog-actions align="end">
+      <button mat-button mat-dialog-close>No</button>
+      <button mat-button mat-dialog-close cdkFocusInitial (click)="onDelete()">
+        Yes
+      </button>
+    </div>
+  `,
+})
+export class DialogDeleteUser {
+  constructor(private dialogRef: MatDialogRef<DialogDeleteUser>) {}
+
+  onDelete() {
+    this.dialogRef.close(true);
   }
 }
