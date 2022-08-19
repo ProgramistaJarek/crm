@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, BehaviorSubject, tap, Subject } from 'rxjs';
 import { Router } from '@angular/router';
 
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
@@ -16,6 +16,8 @@ import { UserDetailsComponent } from 'src/app/features/dashboard/components/user
 })
 export class DashboardComponent implements OnInit {
   users$!: Observable<UserDetails[]>;
+  //users!: BehaviorSubject<UserDetails[]>;
+  users = new Subject<UserDetails[]>();
   displayedColumns: string[] = ['position', 'name', 'email', 'phone'];
 
   constructor(
@@ -25,10 +27,18 @@ export class DashboardComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.users$ = this.service.getUsers();
+    this.users$ = this.service.getUsers().pipe(
+      tap((respone) => {
+        console.log(respone);
+        this.users.next(respone);
+      })
+    );
   }
 
   showDeatils(uid: number) {
+    const test = this.users.asObservable();
+    console.log('test', test.subscribe());
+
     this.service.getUser(uid).subscribe((user) => {
       const dialogRef = this.dialog.open(UserDetailsComponent, {
         data: { user, action: false },
@@ -42,6 +52,19 @@ export class DashboardComponent implements OnInit {
         this.router.navigate(['dashboard']);
       });
     });
+    /* this.service.getUser(uid).subscribe((user) => {
+      const dialogRef = this.dialog.open(UserDetailsComponent, {
+        data: { user, action: false },
+      });
+
+      dialogRef.afterClosed().subscribe((result: UserDetails) => {
+        if (result) {
+          this.service.updateUser(result).subscribe();
+          this.users$ = this.service.getUsers();
+        }
+        this.router.navigate(['dashboard']);
+      });
+    }); */
   }
 
   deleteUser(uid: number) {

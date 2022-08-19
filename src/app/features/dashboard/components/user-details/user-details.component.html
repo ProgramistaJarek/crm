@@ -107,6 +107,7 @@
     mat-dialog-close
     *ngIf="edit"
     (click)="saveChanges()"
+    [disabled]="!profileForm.valid"
   >
     Save
   </button>

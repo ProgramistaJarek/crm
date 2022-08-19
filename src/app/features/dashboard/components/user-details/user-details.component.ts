@@ -1,6 +1,6 @@
 import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { FormGroup, FormControl } from '@angular/forms';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 import { UserDetails } from 'src/app/utilities/UserDetails';
 
@@ -11,14 +11,18 @@ import { UserDetails } from 'src/app/utilities/UserDetails';
 })
 export class UserDetailsComponent {
   profileForm = new FormGroup({
-    name: new FormControl(this.data.user?.name),
-    email: new FormControl(this.data.user?.email),
-    phone: new FormControl(this.data.user?.phone),
-    website: new FormControl(this.data.user?.website),
-    username: new FormControl(this.data.user?.username),
-    city: new FormControl(this.data.user?.address.city),
-    companyName: new FormControl(this.data.user?.company.name),
-    phrase: new FormControl(this.data.user?.company.catchPhrase),
+    name: new FormControl(this.data.user?.name, [Validators.required]),
+    email: new FormControl(this.data.user?.email, [Validators.required]),
+    phone: new FormControl(this.data.user?.phone, [Validators.required]),
+    website: new FormControl(this.data.user?.website, [Validators.required]),
+    username: new FormControl(this.data.user?.username, [Validators.required]),
+    city: new FormControl(this.data.user?.address.city, [Validators.required]),
+    companyName: new FormControl(this.data.user?.company.name, [
+      Validators.required,
+    ]),
+    phrase: new FormControl(this.data.user?.company.catchPhrase, [
+      Validators.required,
+    ]),
   });
   edit = false;
 
