@@ -6,7 +6,7 @@
     alt="avatar"
   />
   <h1>{{ data.user?.name }}</h1>
-  <form *ngIf="edit" class="flex" [formGroup]="profileForm">
+  <form *ngIf="edit && data.action" class="flex" [formGroup]="profileForm">
     <mat-form-field appearance="legacy">
       <input matInput formControlName="name" />
       <mat-icon matSuffix>name</mat-icon>
