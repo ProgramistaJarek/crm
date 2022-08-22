@@ -15,7 +15,7 @@ import { UserDetailsComponent } from 'src/app/features/dashboard/components/user
   styleUrls: ['./dashboard.component.scss'],
 })
 export class DashboardComponent implements OnInit {
-  users$!: Observable<UserDetails[]>;
+  users$: Observable<UserDetails[]> = this.service.getUsers();
   displayedColumns: string[] = ['position', 'name', 'email', 'phone'];
 
   constructor(
@@ -25,7 +25,7 @@ export class DashboardComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.users$ = this.service.getUsers();
+    //this.users$ = this.service.getUsers();
   }
 
   showDeatils(uid: number) {
