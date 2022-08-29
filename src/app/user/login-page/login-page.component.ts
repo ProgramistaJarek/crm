@@ -45,30 +45,30 @@ export class LoginPageComponent implements OnInit {
   }
 
   onSubmit() {
-    if (this.form.valid) {
-      this.service
-        .loginWithEmail(this.email?.value, this.password?.value)
-        .pipe(
-          catchError((err, caught) => {
-            return this.errorHandling(caught);
-          })
-        )
-        .subscribe({
-          next: () => {
-            this.showMessage = false;
-            this.router.navigate(['/home']);
-            this.snackBar.open('Success', 'ok', {
-              duration: 3000,
-            });
-          },
-          error: (e) => {
-            this.showMessage = true;
-            this.errorMessage = e;
-            console.log(e);
-          },
-        });
-      this.form.reset();
-    }
+    if (!this.form.valid) return;
+
+    this.service
+      .loginWithEmail(this.email?.value, this.password?.value)
+      .pipe(
+        catchError((err, caught) => {
+          return this.errorHandling(caught);
+        })
+      )
+      .subscribe({
+        next: () => {
+          this.showMessage = false;
+          this.router.navigate(['/home']);
+          this.snackBar.open('Success', 'ok', {
+            duration: 3000,
+          });
+        },
+        error: (e) => {
+          this.showMessage = true;
+          this.errorMessage = e;
+          console.log(e);
+        },
+      });
+    this.form.reset();
   }
 
   errorHandling(caught: Observable<any>) {

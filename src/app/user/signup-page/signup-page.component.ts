@@ -99,34 +99,34 @@ export class SignupPageComponent implements OnInit {
   }
 
   onSubmit() {
-    if (this.form.valid) {
-      const uid = this.randomId();
+    if (!this.form.valid) return;
 
-      this.service.checkIfAddressEmailExist(this.email?.value).subscribe({
-        next: () => {
-          this.showMessage = false;
+    const uid = this.randomId();
 
-          this.service
-            .addNewUser({
-              firstName: this.firstName?.value,
-              lastName: this.lastName?.value,
-              email: this.email?.value,
-              password: this.password?.value,
-              id: uid,
-            })
-            .subscribe();
-          this.router.navigate(['/login']);
-          this.form.reset();
-          this.snackBar.open('Success', 'ok', {
-            duration: 3000,
-          });
-        },
-        error: (e) => {
-          this.showMessage = true;
-          this.errorMessage = e;
-        },
-      });
-    }
+    this.service.checkIfAddressEmailExist(this.email?.value).subscribe({
+      next: () => {
+        this.showMessage = false;
+
+        this.service
+          .addNewUser({
+            firstName: this.firstName?.value,
+            lastName: this.lastName?.value,
+            email: this.email?.value,
+            password: this.password?.value,
+            id: uid,
+          })
+          .subscribe();
+        this.router.navigate(['/login']);
+        this.form.reset();
+        this.snackBar.open('Success', 'ok', {
+          duration: 3000,
+        });
+      },
+      error: (e) => {
+        this.showMessage = true;
+        this.errorMessage = e;
+      },
+    });
   }
 
   randomId(): number {
