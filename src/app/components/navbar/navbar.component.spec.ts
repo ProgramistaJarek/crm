@@ -1,17 +1,16 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { render, screen } from '@testing-library/angular';
-import { createMock, provideMock } from '@testing-library/angular/jest-utils';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { HttpClient } from '@angular/common/http';
+import { provideMock } from '@testing-library/angular/jest-utils';
+import { Router } from '@angular/router';
+
 import { NavbarComponent } from './navbar.component';
 import { UserService } from 'src/app/services/user.service';
-import { Router } from '@angular/router';
 
 describe('NavbarComponent', () => {
   let component: NavbarComponent;
   let fixture: ComponentFixture<NavbarComponent>;
 
   let userService: UserService;
+  let router: Router;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -25,6 +24,7 @@ describe('NavbarComponent', () => {
     component = fixture.componentInstance;
     fixture.detectChanges();
     userService = TestBed.inject(UserService);
+    router = TestBed.inject(Router);
   });
 
   it('should create', () => {
@@ -41,6 +41,17 @@ describe('NavbarComponent', () => {
 
       //THEN
       expect(serviceSpy).toHaveBeenCalled();
+    });
+
+    it('should correctly navigate to home', () => {
+      //GIVEN
+      const navigateSpy = jest.spyOn(router, 'navigate');
+
+      //WHEN
+      component.onLogout();
+
+      //THEN
+      expect(navigateSpy).toHaveBeenCalledWith(['/home']);
     });
   });
 });
