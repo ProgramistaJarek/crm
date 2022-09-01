@@ -1,6 +1,9 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { provideMock } from '@testing-library/angular/jest-utils';
+import {
+  provideMock,
+  provideMockWithValues,
+} from '@testing-library/angular/jest-utils';
 import { Router } from '@angular/router';
 
 import { HttpClientTestingModule } from '@angular/common/http/testing';
@@ -16,6 +19,7 @@ import { user1, user2, mockUserArray } from 'src/mocks/mockUsers';
 import { SignupPageComponent } from './signup-page.component';
 import { PasswordStrengthBarComponent } from '../password-strength-bar/password-strength-bar.component';
 import { UserService } from 'src/app/services/user.service';
+import { of } from 'rxjs';
 
 describe('SignupPageComponent', () => {
   let component: SignupPageComponent;
@@ -37,7 +41,12 @@ describe('SignupPageComponent', () => {
         BrowserAnimationsModule,
         HttpClientTestingModule,
       ],
-      providers: [provideMock(UserService), provideMock(Router)],
+      providers: [
+        provideMockWithValues(UserService, {
+          checkIfAddressEmailExist: jest.fn().mockReturnValue(of(0)),
+        }),
+        provideMock(Router),
+      ],
     }).compileComponents();
   });
 
@@ -183,25 +192,19 @@ describe('SignupPageComponent', () => {
       expect(serviceSpy).toHaveBeenCalled();
     });
 
-    /* it('should correctly navigate to login', fakeAsync(() => {
+    /* it('should correctly navigate to login', fakeAsync((done: () => void) => {
       //GIVEN
-      jest.spyOn(userService, 'checkIfAddressEmailExist');
-      const navigateSpy = jest.spyOn(router, 'navigate');
-      const hostElement: HTMLElement = fixture.nativeElement;
-      const btn: HTMLElement = hostElement.querySelector('button.uppercase')!;
+      const serviceSpy = jest.spyOn(router, 'navigate');
 
       //WHEN
       component.onSubmit();
-      btn.click();
-      tick();
-      fixture.detectChanges();
-      expect(2).toBe(2);
-      /* userService.checkIfAddressEmailExist('admin@admin.pl').subscribe({
+      userService.checkIfAddressEmailExist('admin@admin.pl').subscribe({
         next: () => {
           //THEN
-          expect(navigateSpy).toHaveBeenCalledWith(['/login']);
+          expect(serviceSpy).toHaveBeenCalled();
+          done();
         },
-      }); 
+      });
     })); */
   });
 });

@@ -61,7 +61,7 @@ export class UserService {
     return localStorage.getItem('uid');
   }
 
-  checkIfAddressEmailExist(email: string) {
+  checkIfAddressEmailExist(email: string): Observable<number> {
     return this.http.get<User[]>(`${this.api}/users`).pipe(
       switchMap((result) => {
         return result;
@@ -74,6 +74,7 @@ export class UserService {
         if (res > 0) {
           throw new Error('Email is already taken');
         }
+        return res;
       })
     );
   }
