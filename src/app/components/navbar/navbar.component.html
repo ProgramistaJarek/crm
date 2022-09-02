@@ -5,7 +5,12 @@
       <button mat-button routerLink="/home">Home</button>
       <button mat-button routerLink="/about">About</button>
       <button mat-button routerLink="/contact">Contact</button>
-      <button mat-button routerLink="/dashboard" *ngIf="isLoggedin | async">
+      <button
+        mat-button
+        routerLink="/dashboard"
+        *ngIf="isLoggedin | async"
+        data-testid="dashboard-button"
+      >
         Dashboard
       </button>
     </nav>
@@ -13,11 +18,14 @@
       mat-button
       routerLink="/login"
       *ngIf="!(isLoggedin | async); else showProfile"
+      data-testid="login-button"
     >
       Login
     </button>
     <ng-template #showProfile>
-      <button mat-button (click)="onLogout()">Logout</button>
+      <button mat-button (click)="onLogout()" data-testid="logout-button">
+        Logout
+      </button>
     </ng-template>
   </div>
 </header>

@@ -2,8 +2,10 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideMock } from '@testing-library/angular/jest-utils';
 import { Router } from '@angular/router';
 
+import { By } from '@angular/platform-browser';
 import { NavbarComponent } from './navbar.component';
 import { UserService } from 'src/app/services/user.service';
+import { BehaviorSubject } from 'rxjs';
 
 describe('NavbarComponent', () => {
   let component: NavbarComponent;
@@ -52,6 +54,83 @@ describe('NavbarComponent', () => {
 
       //THEN
       expect(navigateSpy).toHaveBeenCalledWith(['/home']);
+    });
+
+    it('should not dispaly dashboard ', () => {
+      //GIVEN
+      component.isLoggedin = new BehaviorSubject(false);
+      const { debugElement } = fixture;
+
+      //WHEN
+      fixture.detectChanges();
+
+      //THEN
+      const dashboardRef = debugElement.query(
+        By.css('[data-testid="dashboard-button"]')
+      );
+      expect(dashboardRef).toBeFalsy();
+    });
+
+    it('should correctly dispaly login ', () => {
+      //GIVEN
+      component.isLoggedin = new BehaviorSubject(false);
+      const { debugElement } = fixture;
+
+      //WHEN
+      fixture.detectChanges();
+
+      //THEN
+      const loginRef = debugElement.query(
+        By.css('[data-testid="login-button"]')
+      );
+      expect(loginRef).toBeTruthy();
+    });
+  });
+
+  describe('#onLogin', () => {
+    it('should correctly dispaly dashboard ', () => {
+      //GIVEN
+      component.isLoggedin = new BehaviorSubject(true);
+      const { debugElement } = fixture;
+
+      //WHEN
+      fixture.detectChanges();
+
+      //THEN
+      const dashboardRef = debugElement.query(
+        By.css('[data-testid="dashboard-button"]')
+      );
+      expect(dashboardRef).toBeTruthy();
+    });
+
+    it('should correctly dispaly logout ', () => {
+      //GIVEN
+      component.isLoggedin = new BehaviorSubject(true);
+      const { debugElement } = fixture;
+
+      //WHEN
+      fixture.detectChanges();
+
+      //THEN
+      const logoutRef = debugElement.query(
+        By.css('[data-testid="logout-button"]')
+      );
+      expect(logoutRef).toBeTruthy();
+    });
+
+    it('should not dispaly login ', () => {
+      //GIVEN
+      component.isLoggedin = new BehaviorSubject(true);
+      const { debugElement } = fixture;
+
+      //WHEN
+      fixture.detectChanges();
+
+      //THEN
+      const loginRef = debugElement.query(
+        By.css('[data-testid="login-button"]')
+      );
+      expect(loginRef).toBeFalsy();
     });
   });
 });
