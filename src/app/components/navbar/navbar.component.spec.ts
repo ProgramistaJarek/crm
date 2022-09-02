@@ -1,8 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideMock } from '@testing-library/angular/jest-utils';
 import { Router } from '@angular/router';
-
 import { By } from '@angular/platform-browser';
+
 import { NavbarComponent } from './navbar.component';
 import { UserService } from 'src/app/services/user.service';
 import { BehaviorSubject } from 'rxjs';
