@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 
@@ -9,7 +9,7 @@ import { UserDetails } from 'src/app/utilities/UserDetails';
   templateUrl: './user.component.html',
   styleUrls: ['./user.component.scss'],
 })
-export class UserComponent {
+export class UserComponent implements OnInit {
   @Input() users!: UserDetails[];
   @Output() showDeatils: EventEmitter<number> = new EventEmitter();
   @Output() deleteUser: EventEmitter<number> = new EventEmitter();
@@ -23,12 +23,14 @@ export class UserComponent {
     'actions',
   ];
 
-  constructor(private router: ActivatedRoute, public dialog: MatDialog) {
+  constructor(private router: ActivatedRoute, public dialog: MatDialog) {}
+
+  ngOnInit(): void {
     this.router.queryParams.subscribe((params) => {
-      if (params['action'] === 'edit') {
+      if (params['action'] === 'edit' && params['id']) {
         this.onShowDeatails(params['id']);
       }
-      if (params['action'] === 'delete') {
+      if (params['action'] === 'delete' && params['id']) {
         this.onDelete(params['id']);
       }
       if (params['action'] === 'add') {
